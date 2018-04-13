@@ -37,6 +37,13 @@ class LoggableListener extends MappedEventSubscriber
      * @var string
      */
     protected $username;
+    
+    /**
+     * Facility for identification
+     *
+     * @var int
+     */
+    protected $facilityId;
 
     /**
      * List of log entries which do not have the foreign
@@ -72,6 +79,24 @@ class LoggableListener extends MappedEventSubscriber
             $this->username = (string) $username->getUsername();
         } else {
             throw new \Gedmo\Exception\InvalidArgumentException("Username must be a string, or object should have method: getUsername");
+        }
+    }
+    
+    /**
+     * Set facility for identification
+     *
+     * @param mixed $facility
+     *
+     * @throws \Gedmo\Exception\InvalidArgumentException Invalid facility
+     */
+    public function setFacility($facility)
+    {
+        if (is_int($facility)) {
+            $this->facilityId = $facility;
+        } elseif (is_object($facility) && method_exists($facility, 'getFacilityId')) {
+            $this->facilityId = $facility->getFacilityId();
+        } else {
+            throw new \Gedmo\Exception\InvalidArgumentException("Facility must be a string, or object should have method: getFacilityId");
         }
     }
 
@@ -281,6 +306,7 @@ class LoggableListener extends MappedEventSubscriber
 
             $logEntry->setAction($action);
             $logEntry->setUsername($this->username);
+            $logEntry->setFacilityId($this->facilityId);
             $logEntry->setObjectClass($meta->name);
             $logEntry->setLoggedAt();
 

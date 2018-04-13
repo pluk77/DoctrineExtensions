@@ -63,11 +63,18 @@ abstract class AbstractLogEntry
     protected $data;
 
     /**
-     * @var string $data
+     * @var string $username
      *
-     * @ORM\Column(length=255, nullable=true)
+     * @ORM\Column(length=255)
      */
     protected $username;
+
+    /**
+     * @var int $facility_id
+     *
+     * @ORM\Column(name="facility_id", type="integer")
+     */
+    protected $facilityId;
 
     /**
      * Get id
@@ -157,6 +164,26 @@ abstract class AbstractLogEntry
     public function setUsername($username)
     {
         $this->username = $username;
+    }
+    
+    /**
+     * Get facility
+     *
+     * @return string
+     */
+    public function getFacilityId()
+    {
+        return $this->facility_id;
+    }
+
+    /**
+     * Set facility_id
+     *
+     * @param int $facilityId
+     */
+    public function setFacilityId($facilityId)
+    {
+        $this->facility_id = $facilityId;
     }
 
     /**
